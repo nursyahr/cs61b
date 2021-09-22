@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author syah
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -137,8 +137,26 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        /** first for loop gets me the row index. {0,0,0,0}
+         * second for loop access each column in the row.
+         * tile (col, row)
+         */
+        int x = 0;
+        outerloop:
+        for (int i = 0; i < b.size(); i += 1) { // row = i
+            for (int j = 0; j < b.size(); j += 1) { // col = j
+                if (b.tile(j, i) == null) {
+                    x += 1;
+                    break outerloop;
+                }
+            }
+        }
+
+        if (x != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -147,8 +165,23 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        int x = 0;
+
+        for (int i = 0; i < b.size(); i += 1) { // row = i
+            for (int j = 0; j < b.size(); j += 1) { // col = j
+                if (b.tile(j, i) != null) {
+                    if ( b.tile(j,i).value() == Model.MAX_PIECE) {
+                        x += 1;
+                    }
+                }
+            }
+        }
+
+        if (x != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -158,8 +191,57 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+        if (adjacentTrue(b)) {
+            return true;
+        }
         return false;
+    }
+
+    /**
+     *
+     * @param b
+     * @return true if there is a move adjacent
+     */
+    public static boolean adjacentTrue(Board b) {
+        int x = 0;
+        for (int i = 0; i < b.size(); i ++) { // row is i
+            for (int j = 0; j < b.size(); j ++) { // col
+
+                if (b.tile(j, i) != null) { // if its not empty
+                    // check on top
+                    if (i + 1 < b.size() && b.tile(j, i).value() == b.tile(j, i+1  ).value()) {
+                        x += 1;
+                    }
+
+                    // check below
+                    else if (i - 1 > 0 && b.tile(j, i).value() == b.tile(j, i-1  ).value()) {
+                        x += 1;
+                    }
+
+                    // check right
+                    else if (j+1 < b.size() && b.tile(j, i).value() == b.tile(j+1, i  ).value()) {
+                        x += 1;
+                    }
+
+                    // check left
+                    else if  (j - 1 > 0 && b.tile(j, i).value() == b.tile(j-1, i  ).value()) {
+                        x += 1;
+                    }
+
+                }
+
+
+            }
+        }
+        if (x == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 
