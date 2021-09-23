@@ -113,6 +113,23 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        // Top Row = stays put
+        // Other pieces can move up if: 1) emptySpaceExists or 2) same number
+        // Go by columns.
+        // Dont have to iterate over row 3.
+        /** 1. Check if top row ( == b.size() )
+         *  2. Helper fun for column: Check if EmptySpaceExists + Check if SameNumber
+         *  4. Update score with merged tile (sum of initial numbers i.e. x * 2)
+         */
+        int col;
+        int addScore = 0;
+
+        for (col = 0; col < board.size(); col++) {
+             addScore += moveColumn(col);
+        }
+
+        changed = true;
+        score += addScore;
 
         checkGameOver();
         if (changed) {
@@ -120,6 +137,63 @@ public class Model extends Observable {
         }
         return changed;
     }
+
+    public int moveColumn(int col) {
+        int updateScore = 0;
+        int totalRows = board.size();
+        int currRow;
+        int newRow;
+        // no of rows is size
+        for (currRow = totalRows - 1; currRow > 0; currRow -= 1) {
+            Tile currTile = board.tile(col, currRow);
+            // if the current tile is empty, ignore.
+            if (currTile != null) {
+                newRow = RowToMove(currTile, col, currRow); // give me the index of the row to move to
+                int temp = currTile.value(); // store the current value of the tile
+                currTile.move(col, newRow); // currTile has moved.
+
+                Tile MovedToTile = board.tile(col, newRow);// create the tile it moved to, to check the value.
+
+                if (MovedToTile.value() != temp) {
+                    updateScore += currTile.value();
+                }
+
+            }
+        }
+        return updateScore;
+        }
+
+
+
+    /**
+     * for aboveTile; true: not empty, same number && merged once only | false: empty, not same number
+     * aboveTile increment the row only if first return true
+     */
+
+    public int RowToMove(Tile currTile, int col, int currRow) {
+
+        int AboveTileRow = currRow + 1;
+
+        // Create a flexible aboveTile
+        Tile aboveTile = board.tile(col, AboveTileRow);
+
+        // Move up empty spaces
+        while (aboveTile == null) {
+            aboveTile = board.tile(col, AboveTileRow + 1);
+        }
+
+        // If the tile is the same, update the row of currTile by merging.
+        if (aboveTile.value() == currTile.value()) {
+            currRow += 1;
+        }
+
+        return currRow;
+    }
+
+
+
+
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
