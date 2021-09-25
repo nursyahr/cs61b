@@ -14,6 +14,7 @@ public class IntListExercises {
             head.first += c;
             head = head.rest;
         }
+        head.first += c;
     }
 
     /**
@@ -26,7 +27,9 @@ public class IntListExercises {
     public static void setToZeroIfMaxFEL(IntList L) {
         IntList p = L;
         while (p != null) {
-            if (firstDigitEqualsLastDigit(max(p))) {
+            int currentMax = max(p);
+            boolean firstEqualsLast = firstDigitEqualsLastDigit(currentMax);
+            if (firstEqualsLast && currentMax == p.first) {
                 p.first = 0;
             }
             p = p.rest;
@@ -54,9 +57,16 @@ public class IntListExercises {
         while (x > 10) {
             x = x / 10;
         }
-        int firstDigit = x % 10;
+
+        int firstDigit;
+        if (x == 10) {
+            firstDigit = 1;
+        } else {
+            firstDigit = x % 10;
+        }
         return firstDigit == lastDigit;
     }
+
 
     /**
      * Part C: (Buggy) mutative method that squares each prime
@@ -66,17 +76,30 @@ public class IntListExercises {
      * @return True if there was an update to the list
      */
     public static boolean squarePrimes(IntList lst) {
+        return squarePrimes(lst, 0);
+    }
+
+    /**
+     * Created a private method to add a counter (count) that is updated every time the element is squared
+     * I pass in the counter as a parameter so that this information is retained through each iteration
+     * Finally, once it reaches the end of the lst, it will return True if the counter is > 0;
+     */
+    private static boolean squarePrimes(IntList lst, int count) {
         // Base Case: we have reached the end of the list
         if (lst == null) {
-            return false;
+            return count > 0;
         }
 
         boolean currElemIsPrime = Primes.isPrime(lst.first);
 
         if (currElemIsPrime) {
             lst.first *= lst.first;
+            count += 1;
         }
 
-        return currElemIsPrime || squarePrimes(lst.rest);
+        return squarePrimes(lst.rest, count);
     }
+
+
+
 }
