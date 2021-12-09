@@ -5,31 +5,45 @@ public class LinkedListDeque<T>{
         private IntNode next;
         private IntNode prev;
 
-        public IntNode(T i, IntNode n, IntNode p) {
+        public IntNode(T i) {
             item = i;
-            next = n;
-            prev = p;
         }
     }
 
     private IntNode sentinel;
     private int size = 0;
 
+    public LinkedListDeque(){
+        sentinel = new IntNode(null);
+        sentinel.next = new IntNode(null);
+        sentinel.prev = new IntNode(null);
+    }
+
     public void addFirst(T item){
         // addFirst to queue//
-        IntNode oldNext = this.sentinel.next;
-        IntNode newNode = new IntNode(item, oldNext, this.sentinel); // add to front
-        this.sentinel.next = newNode;
-        oldNext.prev = newNode;
+        IntNode newFirst = new IntNode(item);
+        newFirst.prev = sentinel;
+        newFirst.next = sentinel.next;
+        sentinel.next.prev = newFirst;
+        sentinel.next = newFirst;
+        if (this.isEmpty()) {
+            sentinel.prev = newFirst;
+            newFirst.next = sentinel;
+        }
         this.size += 1;
     }
 
     public void addLast(T item){
-        IntNode oldPrev = this.sentinel.prev;
-        IntNode newNode = new IntNode(item, this.sentinel, oldPrev); // add to last
-        this.sentinel.prev = newNode;
-        oldPrev.next = newNode;
-        size += 1;
+        IntNode newLast = new IntNode(item);
+        newLast.prev = sentinel.prev;
+        newLast.next = sentinel;
+        sentinel.prev.next = newLast;
+        sentinel.prev = newLast;
+        if (this.isEmpty()) {
+            newLast.prev = sentinel;
+            sentinel.next = newLast;
+        }
+        this.size += 1;
     }
 
     public int size(){
