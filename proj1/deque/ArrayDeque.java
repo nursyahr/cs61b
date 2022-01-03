@@ -23,7 +23,7 @@ public class ArrayDeque<T> {
         size = 0;
         arrlength = items.length;
         ur = size/arrlength;
-        front = back = -1;
+        front = back = 0;
 
     }
     // After every add or remove, check if necessary to resize;
