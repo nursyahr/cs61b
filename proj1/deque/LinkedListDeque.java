@@ -26,7 +26,7 @@ public class LinkedListDeque<T>{
         newFirst.next = sentinel.next;
         sentinel.next.prev = newFirst;
         sentinel.next = newFirst;
-        if (this.isEmpty()) {
+        if (this.isEmpty()) {           // if the DLList is empty, need to establish the prev and next
             sentinel.prev = newFirst;
             newFirst.next = sentinel;
         }
@@ -39,7 +39,7 @@ public class LinkedListDeque<T>{
         newLast.next = sentinel;
         sentinel.prev.next = newLast;
         sentinel.prev = newLast;
-        if (this.isEmpty()) {
+        if (this.isEmpty()) {            // if the DLList is empty, need to establish the prev and next
             newLast.prev = sentinel;
             sentinel.next = newLast;
         }
@@ -90,5 +90,11 @@ public class LinkedListDeque<T>{
         }
         return null;
     }
+
+    public T getRecursive(int index){
+        return null;
+    }
+
+
 
 }
