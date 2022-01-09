@@ -32,7 +32,7 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
 
-        if (ur <= 0.25){
+        if (arrlength > 50 && ur <= 0.25){
             resize((int)Math.round(size * 0.5)); // math.round returns a double
         }
     }
@@ -51,13 +51,13 @@ public class ArrayDeque<T> {
     public void addFirst(T item) {
         items[front] = item;
         size += 1;
-        front = (front -1) % arrlength; // update new front;
+        front = Math.floorMod((front-1), arrlength); // update new front;
         checkresize();
     }
 
     public void addLast(T item){
         items[back] = item;
-        size -= 1;
+        size += 1;
         back = (back + 1) % arrlength; //update new back
         checkresize();
     }
