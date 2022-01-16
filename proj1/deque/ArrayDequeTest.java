@@ -1,6 +1,9 @@
 package deque;
 
 import org.junit.Test;
+
+import java.sql.Array;
+
 import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
@@ -78,9 +81,9 @@ public class ArrayDequeTest {
     public void multipleParamTest() {
 
 
-        LinkedListDeque<String>  lld1 = new LinkedListDeque<String>();
-        LinkedListDeque<Double>  lld2 = new LinkedListDeque<Double>();
-        LinkedListDeque<Boolean> lld3 = new LinkedListDeque<Boolean>();
+        ArrayDeque<String>  lld1 = new ArrayDeque<String>();
+        ArrayDeque<Double>  lld2 = new ArrayDeque<Double>();
+        ArrayDeque<Boolean> lld3 = new ArrayDeque<Boolean>();
 
         lld1.addFirst("string");
         lld2.addFirst(3.14159);
@@ -97,7 +100,7 @@ public class ArrayDequeTest {
     public void emptyNullReturnTest() {
 
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
 
         boolean passed1 = false;
         boolean passed2 = false;
@@ -112,20 +115,42 @@ public class ArrayDequeTest {
     public void bigLLDequeTest() {
 
 
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
-        for (int i = 0; i < 1000000; i++) {
+        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
+        for (int i = 0; i < 10; i++) {
             lld1.addLast(i);
         }
 
-        for (double i = 0; i < 500000; i++) {
+        ArrayDeque<Integer> lld2 = new ArrayDeque<Integer>();
+        for (int i = 0; i < 500; i++) {
+            lld2.addLast(i);
+        }
+
+
+        for (double i = 0; i < 500; i++) {
             assertEquals("Should have the same value", i, (double) lld1.removeFirst(), 0.0);
         }
 
-        for (double i = 999999; i > 500000; i--) {
-            assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
+        // for (double i = 999999; i > 500000; i--) {
+        //      assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
+        //}
+        //}
+    }
+    @Test
+    /* Get item i from deque */
+    public void getDequeTest() {
+        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
+
+        for (int i = 0; i < 5; i++) {
+            lld1.addLast(i);
         }
 
+        assertEquals(0, lld1.get(0), 0.0);
+        assertEquals(1, lld1.get(1), 0.0);
+        assertEquals(2, lld1.get(2), 0.0);
+        assertEquals(3, lld1.get(3), 0.0);
+        assertEquals(4, lld1.get(4), 0.0);
 
     }
 }
+
 
